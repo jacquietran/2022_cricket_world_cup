@@ -57,7 +57,7 @@ bowling_australia <- data_tidy %>%
   filter(bowling_team == "Australia") %>%
   group_by(bowler) %>%
   summarise(
-    games_played = length(unique(match_id)),
+    games_bowled = length(unique(match_id)),
     balls_bowled = length(match_id),
     wickets_total = sum(wicket_by_bowler, na.rm = TRUE),
     strike_rate_bowl = case_when(
@@ -74,7 +74,7 @@ bowling_australia <- data_tidy %>%
 # Pivot to long format for plotting
 bowling_australia_long <- bowling_australia %>%
   select(
-    bowler, games_played, balls_bowled, wickets_total, strike_rate_bowl,
+    bowler, games_bowled, balls_bowled, wickets_total, strike_rate_bowl,
     runs_total_conceded, runs_total_conceded_per_over) %>%
   tidyr::pivot_longer(
     cols = -bowler,
@@ -83,11 +83,11 @@ bowling_australia_long <- bowling_australia %>%
   mutate(
     key = factor(
       key, levels = c(
-        "games_played", "balls_bowled", "wickets_total", "strike_rate_bowl",
+        "games_bowled", "balls_bowled", "wickets_total", "strike_rate_bowl",
         "runs_total_conceded", "runs_total_conceded_per_over")),
     bowler_mod = tidytext::reorder_within(bowler, value, key),
     label_xpos = case_when(
-      key == "games_played"                 ~ value + 0.2,
+      key == "games_bowled"                 ~ value + 0.2,
       key == "balls_bowled"                 ~ value + 13,
       key == "wickets_total"                ~ value + 0.3,
       key == "strike_rate_bowl"             ~ value + 3.5,
@@ -112,7 +112,7 @@ bowling_south_africa <- data_tidy %>%
   filter(bowling_team == "South Africa") %>%
   group_by(bowler) %>%
   summarise(
-    games_played = length(unique(match_id)),
+    games_bowled = length(unique(match_id)),
     balls_bowled = length(match_id),
     wickets_total = sum(wicket_by_bowler, na.rm = TRUE),
     strike_rate_bowl = case_when(
@@ -129,7 +129,7 @@ bowling_south_africa <- data_tidy %>%
 # Pivot to long format for plotting
 bowling_south_africa_long <- bowling_south_africa %>%
   select(
-    bowler, games_played, balls_bowled, wickets_total, strike_rate_bowl,
+    bowler, games_bowled, balls_bowled, wickets_total, strike_rate_bowl,
     runs_total_conceded, runs_total_conceded_per_over) %>%
   tidyr::pivot_longer(
     cols = -bowler,
@@ -138,11 +138,11 @@ bowling_south_africa_long <- bowling_south_africa %>%
   mutate(
     key = factor(
       key, levels = c(
-        "games_played", "balls_bowled", "wickets_total", "strike_rate_bowl",
+        "games_bowled", "balls_bowled", "wickets_total", "strike_rate_bowl",
         "runs_total_conceded", "runs_total_conceded_per_over")),
     bowler_mod = tidytext::reorder_within(bowler, value, key),
     label_xpos = case_when(
-      key == "games_played"                 ~ value + 0.15,
+      key == "games_bowled"                 ~ value + 0.15,
       key == "balls_bowled"                 ~ value + 15,
       key == "wickets_total"                ~ value + 0.5,
       key == "strike_rate_bowl"             ~ value + 7,
@@ -159,7 +159,7 @@ key_labels <- bowling_australia_long %>%
   distinct(key) %>%
   mutate(
     label = case_when(
-      stringr::str_detect(key, "games")    ~ "Games played",
+      stringr::str_detect(key, "games")    ~ "Games bowled",
       stringr::str_detect(key, "bowled")   ~ "Balls bowled",
       stringr::str_detect(key, "wickets")  ~ "Wickets",
       stringr::str_detect(key, "strike")   ~ "Strike rate",
